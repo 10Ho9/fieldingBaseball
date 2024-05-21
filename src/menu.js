@@ -79,7 +79,7 @@ class UniqueButtons {
       } else if (index >= 6 && index <= 8) {
         adjustedY += 60;
       }
-      let adjustedX = x + (index % 3) * 150;
+      let adjustedX = x + (index % 3) * width;
 
       const button = new CheckButton(name, index, adjustedX, adjustedY, width, height);
       button.addObserver(this);
@@ -111,10 +111,12 @@ class PopUp extends Container {
 
     const popupBackground = new Graphics();
 
-    const popupWidth = 500;
+    const popupWidth = view.width;
     const popupHeight = 350;
     const centerX = ((view.width - popupWidth) / 2);
     const centerY = (view.height - popupHeight) / 2;
+
+    const buttonWidth = (popupWidth) / 3 - 20
 
     popupBackground.beginFill(0xFFFFFF);
     popupBackground.drawRect(centerX, centerY, popupWidth, popupHeight);
@@ -123,14 +125,14 @@ class PopUp extends Container {
     const situationText = new TitleText('Situation', 16, 'black', centerX + 10, centerY + 10);
     const runnerText = new TitleText('Runner', 14, 'black', centerX + 10, centerY + 40);
     const runnerButtons = ['First', 'Second', 'Third'].map((name, index) => {
-      return new CheckButton(name, index, centerX + 20 + index * 150, centerY + 10 + 60, 150, 20);
+      return new CheckButton(name, index, centerX + 20 + index * buttonWidth, centerY + 10 + 60, buttonWidth, 20);
     });
     const hitText = new TitleText('Hit', 14, 'black', centerX + 10, centerY + 100);
     const hitResultButtons = new UniqueButtons({
       names: ['Ground Ball', 'Fly Ball', 'Hit'],
       x: centerX + 20,
       y: centerY + 130,
-      width: 150,
+      width: buttonWidth,
       height: 20
     });
 
@@ -139,7 +141,7 @@ class PopUp extends Container {
       names: ['P', 'C', '1B', '2B', '3B', 'SS'],
       x: centerX + 20,
       y: centerY + 190,
-      width: 150,
+      width: buttonWidth,
       height: 20
     });
 
@@ -147,7 +149,7 @@ class PopUp extends Container {
       names: ['P', 'C', '1B', '2B', '3B', 'SS', 'LF', 'CF', 'RF'],
       x: centerX + 20,
       y: centerY + 190,
-      width: 150,
+      width: buttonWidth,
       height: 20
     });
 
@@ -155,7 +157,7 @@ class PopUp extends Container {
       names: ['Single', 'Double', 'Triple'],
       x: centerX + 20,
       y: centerY + 150,
-      width: 150,
+      width: buttonWidth,
       height: 20
     });
     const hitSubText = new TitleText('Ball', 14, 'black', centerX + 10, centerY + 190);
@@ -163,7 +165,7 @@ class PopUp extends Container {
       names: ['LF', 'CF', 'RF'],
       x: centerX + 20,
       y: centerY + 210,
-      width: 150,
+      width: buttonWidth,
       height: 20
     });
     hitResultButtons.buttons.forEach(button => {
@@ -178,7 +180,7 @@ class PopUp extends Container {
       [ballText, flyBallSubButton],
       [hitSubButton, hitSubText, hitSubBallButton]];
 
-    const playButton = new Button('Play', centerX + 170, centerY + 300, 150, 20);
+    const playButton = new Button('Play', centerX + buttonWidth + 20, centerY + 300, buttonWidth, 20);
     playButton.on('pointerdown', () => {
       this.showSelectdButtons();
     });

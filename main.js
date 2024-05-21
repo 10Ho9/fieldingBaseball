@@ -35,17 +35,17 @@ const ballPosition = {
   centerb: [513, 728]
 };
 
-const app = new Application({ resizeTo: window, });
-
+const app = new Application({ backgroundColor: 0x000000, resizeTo: window, });
+app.renderer.resize(window.innerWidth, window.innerHeight)
 document.body.appendChild(app.view);
 
 const backgroundTexture = await Assets.load('/field.png');
 const background = new Sprite(backgroundTexture);
-const scaleX = app.renderer.width / background.width;
-const scaleY = app.renderer.height / background.height;
+const scaleX = window.innerWidth / background.width;
+const scaleY = window.innerHeight / background.height;
 
-background.width = app.renderer.width;
-background.height = app.renderer.height;
+background.width = window.innerWidth;
+background.height = window.innerHeight;
 
 const baseballTexture = await Assets.load('/Baseball.svg');
 const baseball = new Ball(baseballTexture, ballPosition.home[0] * scaleX, ballPosition.home[1] * scaleY);
@@ -122,9 +122,9 @@ background.on('pointerdown', () => {
 const graphics = new Graphics();
 
 graphics.beginFill(0xDE3249, 0);
-graphics.drawRect(50, 50, window.innerWidth, window.innerHeight);
+graphics.drawRect(0, 0, window.innerWidth, window.innerHeight);
 graphics.endFill();
-graphics.hitArea = new Rectangle(50, 50, window.innerWidth, window.innerHeight);
+graphics.hitArea = new Rectangle(0, 0, window.innerWidth, window.innerHeight);
 graphics.eventMode = 'dynamic';
 graphics.on('pointertap', (event) => {
   const position = event.data.global;
@@ -132,7 +132,8 @@ graphics.on('pointertap', (event) => {
 });
 
 //app.stage.addChild(graphics);
-menu.popupContainer.on('play', () => {
+menu.popupContainer.on('play', (result) => {
+  console.log(result)
   baseball.moveTo(ballPosition.right[0] * scaleX, ballPosition.right[1] * scaleY, 4)
 
   players.forEach((player, index) => {
