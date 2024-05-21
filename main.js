@@ -41,12 +41,15 @@ document.body.appendChild(app.view);
 
 const backgroundTexture = await Assets.load('/field.png');
 const background = new Sprite(backgroundTexture);
+const scaleX = app.renderer.width / background.width;
+const scaleY = app.renderer.height / background.height;
 
+background.width = app.renderer.width;
+background.height = app.renderer.height;
 
 const baseballTexture = await Assets.load('/Baseball.svg');
-const baseball = new Ball(baseballTexture, ballPosition.home[0], ballPosition.home[1]);
+const baseball = new Ball(baseballTexture, ballPosition.home[0] * scaleX, ballPosition.home[1] * scaleY);
 app.stage.addChild(background, baseball);
-
 
 const pg = {
   name: "Pitcher Ground Ball",
@@ -99,7 +102,7 @@ const ssg = {
     [416, 473, 3], [447, 430, 3], [699, 505, 3]
   ]
 }
-const players = startPosition.map(pos => new Player(pos.position, pos.x, pos.y));
+const players = startPosition.map(pos => new Player(pos.position, pos.x * scaleX, pos.y * scaleY));
 
 players.forEach(player => {
   app.stage.addChild(player);
@@ -130,10 +133,10 @@ graphics.on('pointertap', (event) => {
 
 //app.stage.addChild(graphics);
 menu.popupContainer.on('play', () => {
-  baseball.moveTo(ballPosition.right[0], ballPosition.right[1], 4)
+  baseball.moveTo(ballPosition.right[0] * scaleX, ballPosition.right[1] * scaleY, 4)
 
   players.forEach((player, index) => {
     let [x, y, d] = ssg.moveTo[index];
-    player.moveTo(x, y, d)
+    player.moveTo(x * scaleX, y * scaleY, d)
   });
 })
